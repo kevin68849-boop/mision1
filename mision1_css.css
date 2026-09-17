@@ -1,0 +1,23 @@
+#tablero {
+    display: grid;
+
+    grid-template-columns: repeat(8, 70px);
+    grid-template-rows: repeat(8, 70px);
+
+    width: 560px;
+    height: 560px;
+}
+
+.casilla {
+    width: 70px;
+    height: 70px;
+
+}
+
+.blanca {
+    background-color: grey;
+}
+
+.negra {
+    background-color: brown;
+}
