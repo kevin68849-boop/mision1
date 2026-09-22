@@ -1,10 +1,21 @@
 
 //----------------------generacion de clases---------------------------------------------
 
-class Peon {
-    constructor(color) {
-        this.tipo = "peon";
+class pieza{
+    constructor(color){
         this.color = color;
+    }
+    MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna) {
+    tablero[DestinoFila][DestinoColumna] = tablero[OrigenFila][OrigenColumna];
+    tablero[OrigenFila][OrigenColumna] = null;
+}
+}
+
+class Peon extends pieza {
+    constructor(color) {
+        super(color);
+        this.tipo = "peon";
+        
 
         if (color === "negro") {
             this.imagen = "./recursoso/peon-negro.png";
@@ -13,10 +24,11 @@ class Peon {
         }
     }
 }
-class Alfil {
+class Alfil extends pieza {
     constructor(color) {
+        super(color);
         this.tipo = "alfil";
-        this.color = color;
+        
 
         if (color === "negro") {
             this.imagen = "./recursoso/alfil-negro.png";
@@ -25,10 +37,11 @@ class Alfil {
         }
     }
 }
-class Caballo {
+class Caballo extends pieza {
     constructor(color) {
-        this.tipo = "pecaballoon";
-        this.color = color;
+        super(color);
+        this.tipo = "caballo";
+        
 
         if (color === "negro") {
             this.imagen = "./recursoso/caballo-negro.png";
@@ -37,10 +50,11 @@ class Caballo {
         }
     }
 }
-class Torre {
+class Torre extends pieza {
     constructor(color) {
+        super(color);
         this.tipo = "torre";
-        this.color = color;
+        
 
         if (color === "negro") {
             this.imagen = "./recursoso/torre-negra.png";
@@ -49,10 +63,11 @@ class Torre {
         }
     }
 }
-class Reina {
+class Reina extends pieza {
     constructor(color) {
+        super(color);
         this.tipo = "reina";
-        this.color = color;
+        
 
         if (color === "negro") {
             this.imagen = "./recursoso/reina-negra.png";
@@ -61,10 +76,11 @@ class Reina {
         }
     }
 }
-class Rey {
+class Rey extends pieza {
     constructor(color) {
+        super(color);
         this.tipo = "rey";
-        this.color = color;
+        
 
         if (color === "negro") {
             this.imagen = "./recursoso/rey-negro.png";
@@ -143,38 +159,53 @@ let tablero = [
 ];
 
 
-const tablero_html = document.getElementById("tablero");
-for (let fila = 0; fila < 8; fila++) {
-    for (let columna = 0; columna < 8; columna++) {
-        const casilla = document.createElement("div");
-        casilla.classList.add("casilla");
-        casilla.dataset.fila = fila;
-        casilla.dataset.columna = columna;
-        if ((fila + columna) % 2 === 0) {
-            casilla.classList.add("blanca");
-        } else {
-            casilla.classList.add("negra");
+let piezaSeleccionada = null;
+let filaOrigen = null;
+let columnaOrigen = null;
+
+
+function dibujarTablero() {
+    const tablero_html = document.getElementById("tablero");
+    tablero_html.innerHTML = "";
+
+    for (let fila = 0; fila < 8; fila++) {
+        for (let columna = 0; columna < 8; columna++) {
+            const casilla = document.createElement("div");
+            casilla.classList.add("casilla");
+            casilla.dataset.fila = fila;
+            casilla.dataset.columna = columna;
+            casilla.addEventListener("click", () =>{
+                if(piezaSeleccionada === null){
+                    piezaSeleccionada = tablero[fila][columna];
+                    if(piezaSeleccionada != null){
+                        filaOrigen = fila;
+                        columnaOrigen = columna;
+
+                    }
+                }else{
+                    piezaSeleccionada.MoverPieza(filaOrigen, columnaOrigen, fila, columna);
+                    piezaSeleccionada = null;
+                }
+            });
+            if ((fila + columna) % 2 === 0) {
+                casilla.classList.add("blanca");
+            } else {
+                casilla.classList.add("negra");
+            }
+            tablero_html.appendChild(casilla);
+            const pieza = tablero[fila][columna];
+
+            if (pieza !== null) {
+                const imagen = document.createElement("img");
+                imagen.src = pieza.imagen;
+                casilla.appendChild(imagen);
+            }
+            
         }
-        tablero_html.appendChild(casilla);
-        const pieza = tablero[fila][columna];
-
-        if (pieza !== null) {
-            const imagen = document.createElement("img");
-            imagen.src = pieza.imagen;
-            casilla.appendChild(imagen);
-}
-        
     }
+    
 }
 
 
 
-function MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna) {
-    tablero[DestinoFila][DestinoColumna] = tablero[OrigenFila][OrigenColumna];
-    tablero[OrigenFila][OrigenColumna] = null;
-}
 
-function MoverPeon(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna) {
-    tablero[DestinoFila][DestinoColumna] = tablero[OrigenFila][OrigenColumna];
-    tablero[OrigenFila][OrigenColumna] = null;
-}
