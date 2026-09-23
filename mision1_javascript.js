@@ -1,3 +1,7 @@
+//----------------------variables globales----------------------------------------------
+
+let contadorTurnos = 0;
+let turnoActual = "blanco";
 
 //----------------------generacion de clases---------------------------------------------
 
@@ -6,10 +10,28 @@ class pieza{
         this.color = color;
     }
     MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna) {
-    tablero[DestinoFila][DestinoColumna] = tablero[OrigenFila][OrigenColumna];
-    tablero[OrigenFila][OrigenColumna] = null;
+        const piezaOrigen = tablero[OrigenFila][OrigenColumna];
+        const piezaDestino = tablero[DestinoFila][DestinoColumna];
+        if(piezaDestino !== null && piezaOrigen.color === piezaDestino.color){
+            return;
+        }else if(piezaOrigen == null || piezaOrigen.color != turnoActual){
+            return;
+        }else{
+            tablero[DestinoFila][DestinoColumna] = tablero[OrigenFila][OrigenColumna];
+            tablero[OrigenFila][OrigenColumna] = null;
+            
+            if(turnoActual == "negro"){
+                turnoActual = "blanco";
+            }else{
+                turnoActual = "negro";
+            }
+            contadorTurnos++;
+        }
+    
+    }
 }
-}
+
+
 
 class Peon extends pieza {
     constructor(color) {
@@ -22,6 +44,22 @@ class Peon extends pieza {
         } else {
             this.imagen = "./recursoso/peon-blanco.png";
         }
+    }
+    MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna){
+
+        let direccion;
+
+        if (this.color === "blanco") {
+            direccion = -1;
+        } else {
+            direccion = 1;
+        }
+
+        
+
+
+        super.MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna);
+
     }
 }
 class Alfil extends pieza {
@@ -162,7 +200,7 @@ let tablero = [
 let piezaSeleccionada = null;
 let filaOrigen = null;
 let columnaOrigen = null;
-
+const tablero_html = document.getElementById("tablero");
 
 function dibujarTablero() {
     const tablero_html = document.getElementById("tablero");
@@ -185,6 +223,7 @@ function dibujarTablero() {
                 }else{
                     piezaSeleccionada.MoverPieza(filaOrigen, columnaOrigen, fila, columna);
                     piezaSeleccionada = null;
+                    dibujarTablero();
                 }
             });
             if ((fila + columna) % 2 === 0) {
@@ -205,6 +244,10 @@ function dibujarTablero() {
     }
     
 }
+
+dibujarTablero();
+
+
 
 
 
