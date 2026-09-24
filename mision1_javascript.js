@@ -2,6 +2,7 @@
 
 let contadorTurnos = 0;
 let turnoActual = "blanco";
+let ultimoMovimiento = null;
 
 //----------------------generacion de clases---------------------------------------------
 
@@ -19,6 +20,13 @@ class pieza{
         }else{
             tablero[DestinoFila][DestinoColumna] = tablero[OrigenFila][OrigenColumna];
             tablero[OrigenFila][OrigenColumna] = null;
+            ultimoMovimiento = {
+                pieza: piezaOrigen,
+                origenFila: OrigenFila,
+                origenColumna: OrigenColumna,
+                destinoFila: DestinoFila,
+                destinoColumna: DestinoColumna
+            };
             
             if(turnoActual == "negro"){
                 turnoActual = "blanco";
@@ -48,13 +56,54 @@ class Peon extends pieza {
     }
     MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna){
 
+        function elegirPromocion(fila, columna, color) {
+
+            const selector = document.createElement("select");
+            const opciones = ["selecciona","reina", "torre", "alfil", "caballo"];
+
+            opciones.forEach(tipo => {
+                const opcion = document.createElement("option");
+                opcion.value = tipo;
+                opcion.textContent = tipo;
+                selector.appendChild(opcion);
+            });
+
+            document.body.appendChild(selector);
+
+            selector.addEventListener("change", () => {
+
+                let nuevaPieza;
+
+                if (selector.value === "reina") {
+                    nuevaPieza = new Reina(color);
+                }
+
+                if (selector.value === "torre") {
+                    nuevaPieza = new Torre(color);
+                }
+
+                if (selector.value === "alfil") {
+                    nuevaPieza = new Alfil(color);
+                }
+
+                if (selector.value === "caballo") {
+                    nuevaPieza = new Caballo(color);
+                }
+
+                tablero[fila][columna] = nuevaPieza;
+
+                selector.remove();
+                dibujarTablero();
+            });
+        }
+
         let direccion;
         if (this.color === "blanco") {
             direccion = -1;
         } else {
             direccion = 1;
         }
-
+        const piezaDestino = tablero[DestinoFila][DestinoColumna];
         const mismaColumna = DestinoColumna === OrigenColumna;
 
         const destinoVacio = tablero[DestinoFila][DestinoColumna] === null;
@@ -63,27 +112,44 @@ class Peon extends pieza {
 
         const avanzaDos = (this.contador === 0) && (DestinoFila === (OrigenFila + (direccion * 2)));
 
-        const comida = 
+        const cambioPieza = DestinoFila === 0 || DestinoFila === 7;
 
-        if(this.contador === 0){
-            
-            if(DestinoFila !== (OrigenFila + direccion) && DestinoFila !== (OrigenFila + direccion * 2)){
-                return;
-            }else
+        const diagonal = Math.abs(DestinoColumna - OrigenColumna) === 1;
+        
+        const comida = avanzaUno && diagonal && piezaDestino !== null && piezaDestino.color !== this.color;
 
-            this.contador++;
-            super.MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna);
+        const movimientoNormal = mismaColumna && destinoVacio && (avanzaUno || avanzaDos);
 
-        }
         
 
-        if(DestinoFila !== (OrigenFila + direccion) || DestinoFila !== (OrigenFila + direccion * 2)){
+        const puedeComerAlPaso =
+        ultimoMovimiento !== null &&
+        ultimoMovimiento.pieza.tipo === "peon" && ultimoMovimiento.pieza.color !== this.color &&
+        Math.abs(
+            ultimoMovimiento.destinoFila -
+            ultimoMovimiento.origenFila) === 2 &&
+        ultimoMovimiento.destinoFila === OrigenFila &&
+        Math.abs(ultimoMovimiento.destinoColumna - OrigenColumna) === 1 &&
+         DestinoFila === OrigenFila + direccion && 
+         DestinoColumna === ultimoMovimiento.destinoColumna && 
+         tablero[DestinoFila][DestinoColumna] === null;
+
+        if (!movimientoNormal && !comida && !puedeComerAlPaso) {
             return;
         }
 
-
+        
+        
+        if (puedeComerAlPaso) {
+            tablero[ultimoMovimiento.destinoFila][ultimoMovimiento.destinoColumna] = null;
+        }
+        
         super.MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna);
         this.contador++;
+        if(cambioPieza){
+            elegirPromocion(DestinoFila, DestinoColumna, this.color);
+        }
+        
     }
 }
 class Alfil extends pieza {

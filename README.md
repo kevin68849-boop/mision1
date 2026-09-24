@@ -6,8 +6,7 @@ Hoy mi profesor ha dicho algo relacionado con la delegacion, dond eposiblemente 
 que tengo actualmente donde por un bucle for crea toda la matriz con los addEventListener, esto es algo a mirar, tambien planeo
 poner, aun no se si simplemente pasar con el raton por encima de las piezas o al clickar resaltar las casillas donde puedes moverte.
 
-
-Uso de la IA: 
+Uso de IA: 
 Realmente mi uso de la IA es poco invasiva y escueta, donde mayoritariamente lo uso simplemente para pregunta de dudas, posibilidades
 y tambien para obtener mas puntos de vista y consejo de maneras de creacion de este juego, y tambien mucho para la revision de errores
 que yo mismo no encontraba. Todo lo he hecho con una unica IA, CHATGPT.
@@ -33,7 +32,7 @@ Sobre la logica del peon:
 
 "Lo complicado es la funcionalidad de las piezas, ayudame con el peon"
 
-
+le he pedido despues de hacer la logica del peon, la de las demas piezas. 
 
 
 
