@@ -59,10 +59,11 @@ class Peon extends pieza {
 
         const destinoVacio = tablero[DestinoFila][DestinoColumna] === null;
 
-        const avanzaUno = DestinoFila === OrigenFila + direccion;
+        const avanzaUno = DestinoFila === (OrigenFila + direccion);
 
-        const avanzaDos = this.contador === 0 && DestinoFila === OrigenFila + (direccion * 2);
+        const avanzaDos = (this.contador === 0) && (DestinoFila === (OrigenFila + (direccion * 2)));
 
+        const comida = 
 
         if(this.contador === 0){
             

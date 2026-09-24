@@ -15,23 +15,23 @@ Ejemplos de promt copiados y pegados directamente del chat con la IA representat
 
 Sobre vincular casillas y objetos:
 
-“¿Puedo vincular cada espacio a ese objeto creado en JavaScript?”
+"Puedo vincular cada espacio a ese objeto creado en JavaScript?"
 
-Sobre mover las piezas usando la lógica de cada objeto:
+Sobre mover las piezas usando la logica de cada objeto:
 
-“¿No puedo poner mejor un listener a la casilla y que la propia ficha ejecute su lógica? Por eso hice la clase pieza con la lógica del movimiento.”
+"No puedo poner mejor un listener a la casilla y que la propia ficha ejecute su logica? Por eso hice la clase pieza con la logica del movimiento."
 
 Sobre herencia:
 
-“Como dijimos, realmente para las siguientes funciones puedo hacer un extends para luego hacer el funcionamiento de cada pieza, ¿no?”
+"Como dijimos, realmente para las siguientes funciones puedo hacer un extends para luego hacer el funcionamiento de cada pieza, no?"
 
 Sobre el estado actual del proyecto:
 
-“Ahora mismo llevo esto. Haciendo recuento, realmente solo me falta hacer la creación de la lógica para cada pieza, actualizar la interfaz y ya, ¿no?”
+"Ahora mismo llevo esto. Haciendo recuento, realmente solo me falta hacer la creacion de la logica para cada pieza, actualizar la interfaz y ya, no?"
 
-Sobre la lógica del peón:
+Sobre la logica del peon:
 
-“Lo complicado es la funcionalidad de las piezas, ayúdame con el peón.”
+"Lo complicado es la funcionalidad de las piezas, ayudame con el peon"
 
 
 
