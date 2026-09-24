@@ -37,6 +37,7 @@ class Peon extends pieza {
     constructor(color) {
         super(color);
         this.tipo = "peon";
+        this.contador = 0;
         
 
         if (color === "negro") {
@@ -48,18 +49,40 @@ class Peon extends pieza {
     MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna){
 
         let direccion;
-
         if (this.color === "blanco") {
             direccion = -1;
         } else {
             direccion = 1;
         }
 
+        const mismaColumna = DestinoColumna === OrigenColumna;
+
+        const destinoVacio = tablero[DestinoFila][DestinoColumna] === null;
+
+        const avanzaUno = DestinoFila === OrigenFila + direccion;
+
+        const avanzaDos = this.contador === 0 && DestinoFila === OrigenFila + (direccion * 2);
+
+
+        if(this.contador === 0){
+            
+            if(DestinoFila !== (OrigenFila + direccion) && DestinoFila !== (OrigenFila + direccion * 2)){
+                return;
+            }else
+
+            this.contador++;
+            super.MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna);
+
+        }
         
+
+        if(DestinoFila !== (OrigenFila + direccion) || DestinoFila !== (OrigenFila + direccion * 2)){
+            return;
+        }
 
 
         super.MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna);
-
+        this.contador++;
     }
 }
 class Alfil extends pieza {
