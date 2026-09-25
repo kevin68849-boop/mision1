@@ -32,7 +32,9 @@ Sobre la logica del peon:
 
 "Lo complicado es la funcionalidad de las piezas, ayudame con el peon"
 
-le he pedido despues de hacer la logica del peon, la de las demas piezas. 
+le he pedido la variable para la logica del passant.
+
+
 
 
 

@@ -13,31 +13,43 @@ class pieza{
     MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna) {
         const piezaOrigen = tablero[OrigenFila][OrigenColumna];
         const piezaDestino = tablero[DestinoFila][DestinoColumna];
-        if(piezaDestino !== null && piezaOrigen.color === piezaDestino.color){
-            return;
-        }else if(piezaOrigen == null || piezaOrigen.color != turnoActual){
-            return;
-        }else{
-            tablero[DestinoFila][DestinoColumna] = tablero[OrigenFila][OrigenColumna];
-            tablero[OrigenFila][OrigenColumna] = null;
-            ultimoMovimiento = {
-                pieza: piezaOrigen,
-                origenFila: OrigenFila,
-                origenColumna: OrigenColumna,
-                destinoFila: DestinoFila,
-                destinoColumna: DestinoColumna
-            };
-            
-            if(turnoActual == "negro"){
-                turnoActual = "blanco";
-            }else{
-                turnoActual = "negro";
-            }
-            contadorTurnos++;
+        
+        if (piezaOrigen === null) {
+            return false;
         }
-    
+
+        if (piezaOrigen.color !== turnoActual) {
+            return false;
+        }
+
+        if (piezaDestino !== null && piezaOrigen.color === piezaDestino.color) {
+            return false;
+        }
+
+        tablero[DestinoFila][DestinoColumna] = tablero[OrigenFila][OrigenColumna];
+        tablero[OrigenFila][OrigenColumna] = null;
+        ultimoMovimiento = {
+            pieza: piezaOrigen,
+            origenFila: OrigenFila,
+            origenColumna: OrigenColumna,
+            destinoFila: DestinoFila,
+            destinoColumna: DestinoColumna
+        };
+
+
+
+        
+        if(turnoActual == "negro"){
+            turnoActual = "blanco";
+        }else{
+            turnoActual = "negro";
+        }
+        contadorTurnos++;
+        return true;
     }
+    
 }
+
 
 
 
@@ -73,6 +85,10 @@ class Peon extends pieza {
             selector.addEventListener("change", () => {
 
                 let nuevaPieza;
+
+                if (selector.value === "selecciona") {
+                    return;
+                }
 
                 if (selector.value === "reina") {
                     nuevaPieza = new Reina(color);
@@ -110,7 +126,9 @@ class Peon extends pieza {
 
         const avanzaUno = DestinoFila === (OrigenFila + direccion);
 
-        const avanzaDos = (this.contador === 0) && (DestinoFila === (OrigenFila + (direccion * 2)));
+        const casillaIntermediaVacia = tablero[OrigenFila + direccion][OrigenColumna] === null;
+
+        const avanzaDos = this.contador === 0 && DestinoFila === OrigenFila + (direccion * 2) && casillaIntermediaVacia;
 
         const cambioPieza = DestinoFila === 0 || DestinoFila === 7;
 
@@ -134,6 +152,10 @@ class Peon extends pieza {
          DestinoColumna === ultimoMovimiento.destinoColumna && 
          tablero[DestinoFila][DestinoColumna] === null;
 
+        if(this.color !== turnoActual){
+            return;
+        }
+
         if (!movimientoNormal && !comida && !puedeComerAlPaso) {
             return;
         }
@@ -144,7 +166,10 @@ class Peon extends pieza {
             tablero[ultimoMovimiento.destinoFila][ultimoMovimiento.destinoColumna] = null;
         }
         
-        super.MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna);
+        const movidito = super.MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna);
+        if (!movidito){
+            return;
+        }
         this.contador++;
         if(cambioPieza){
             elegirPromocion(DestinoFila, DestinoColumna, this.color);
@@ -190,6 +215,47 @@ class Torre extends pieza {
             this.imagen = "./recursoso/torre-blanca.png";
         }
     }
+
+    function MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna) {
+        
+        const mismaColumna = DestinoColumna === OrigenColumna;
+        const mismaFila = DestinoFila === OrigenFila;
+        const direccion = DestinoColumna > OrigenColumna ? 1 : -1;
+        if (mismaColumna) {
+            for (let Fila = OrigenFila + direccion; i < DestinoFila; i++) {
+                if (tablero[i][OrigenColumna] !== null) {
+                    // hay una pieza bloqueando
+                    return;
+        
+        
+                }
+        }else if (mismaFila) {
+            for (let Columna = OrigenColumna + direccion; i < DestinoColumna; i++) {
+                if (tablero[OrigenFila][i] !== null) {
+                    // hay una pieza bloqueando
+                    return;
+        
+        
+                }
+        }
+        
+
+        if(!mismaColumna && !mismaFila){
+            return false;
+        }
+        if(piezaOrigen === piezaDestino){
+            return false;
+        }
+
+
+
+
+
+        super.MoverPieza(OrigenFila, OrigenColumna, DestinoFila, DestinoColumna);
+        }
+
+    }
+
 }
 class Reina extends pieza {
     constructor(color) {
